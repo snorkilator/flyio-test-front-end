@@ -1,9 +1,11 @@
 // This file contains the content of the home page, including contact information, a "send me a message" form, and a picture of me
 
+import Form from "./Form.tsx"
+
 function Home() {
     return (
       <>
-        <h1>Dr. Dan's Tech Support & Tutoring</h1>
+        {/* <h1>Dr. Dan's Tech Support & Tutoring</h1>
         <div className="info">
         <p>
           Phone: 819 593 9063<br />
@@ -25,21 +27,8 @@ function Home() {
           <li>Printer troubleshooting</li>
         </ul>
         </div>
-        <img alt="picture of Daniel" src="face.webp"></img>
-        <div id="send-me-a-message">
-        <h2>Send me a message</h2>
-        <form>
-          <label>Subject</label>
-          <input type="text" name="subject"/>
-          <label>Email</label>
-          <input type="email" required name="email"/>
-          <label>Message</label>
-          <textarea required name="message" rows={4} cols={50}>
-          Write your message here.
-          </ textarea>
-          <button >Submit</button>
-        </form>
-        </div>
+        <img alt="picture of Daniel" src="face.webp"></img> */}
+        <Form />
       </>
     );
   }

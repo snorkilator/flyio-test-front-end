@@ -16,4 +16,4 @@
 
 ## Email
 
-* send email with contents of message to my email
+* send email with contents of message to my email: using [Mailtrap](https://api-docs.mailtrap.io/) to test smtp sending

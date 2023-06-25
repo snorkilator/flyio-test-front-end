@@ -5,7 +5,7 @@ import Form from "./Form.tsx"
 function Home() {
     return (
       <>
-        {/* <h1>Dr. Dan's Tech Support & Tutoring</h1>
+        <h1>Dr. Dan's Tech Support & Tutoring</h1>
         <div className="info">
         <p>
           Phone: 819 593 9063<br />
@@ -27,7 +27,7 @@ function Home() {
           <li>Printer troubleshooting</li>
         </ul>
         </div>
-        <img alt="picture of Daniel" src="face.webp"></img> */}
+        <img alt="picture of Daniel" src="face.webp"></img>
         <Form />
       </>
     );

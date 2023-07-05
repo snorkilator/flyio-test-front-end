@@ -5,7 +5,7 @@
 // each field page has a back button and a next button
 // for required fields next button doesn't work till input is valid
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type form = { Subject: string; Email: string; Message: string };
 type props = {
@@ -19,6 +19,25 @@ function Form() {
     Email: "email",
     Message: "message",
   } as form);
+
+  useEffect(()=>{
+ let int =  setInterval(async function HandleSaveForm(e: React.MouseEvent) {
+      let options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      };
+      try {
+        let response = await fetch("/save", options);
+        console.log("response:"+response.status)
+      } catch (error) {
+        console.log(error);
+      }
+    }, 1000)
+    return(()=>{clearInterval(int)}
+  )}, [form])
 
   function handleClickBack() {
     setCurrentPage((currentPage) => {
@@ -130,32 +149,6 @@ function Submit(props: props) {
     };
     try {
       let response = await fetch("", options);
-      console.log("response:"+response.status)
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  return (
-    <>
-      <label>Submit</label>
-      <button onClick={(e) => HandleSendForm(e)}>Submit</button>
-      <Save {...props} />
-    </>
-  );
-}
-
-function Save(props: props) {
-  async function HandleSendForm(e: React.MouseEvent) {
-    e.preventDefault()
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(props.form),
-    };
-    try {
-      let response = await fetch("/save", options);
       console.log("response:"+response.status)
     } catch (error) {
       console.log(error);

@@ -21,7 +21,7 @@ function Form() {
   } as form);
 
   useEffect(()=>{
- let int =  setInterval(async function HandleSaveForm(e: React.MouseEvent) {
+ let int =  setInterval(async function HandleSaveForm() {
       let options = {
         method: "POST",
         headers: {

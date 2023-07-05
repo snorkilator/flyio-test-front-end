@@ -139,6 +139,32 @@ function Submit(props: props) {
     <>
       <label>Submit</label>
       <button onClick={(e) => HandleSendForm(e)}>Submit</button>
+      <Save {...props} />
+    </>
+  );
+}
+
+function Save(props: props) {
+  async function HandleSendForm(e: React.MouseEvent) {
+    e.preventDefault()
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(props.form),
+    };
+    try {
+      let response = await fetch("/save", options);
+      console.log("response:"+response.status)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return (
+    <>
+      <label>Submit</label>
+      <button onClick={(e) => HandleSendForm(e)}>Submit</button>
     </>
   );
 }

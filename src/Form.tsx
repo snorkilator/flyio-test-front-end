@@ -20,6 +20,25 @@ function Form() {
     Message: "message",
   } as form);
   
+  async function saveForm() {
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    };
+    try {
+      let response = await fetch("/save", options);
+      console.log("response:"+response.status)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // TODO: change the flag set to use useEffect instead
+  // use cleanup function that executes on unmount
+  // cleanup function should save the form one last time
   let [dataHasBeenEntered, setDataHasBeenEntered] = useState(false)
   function updateFormAndFlag(form: React.SetStateAction<form>){
     // the first time this function runs, the flag will be false
@@ -31,10 +50,7 @@ function Form() {
     setForm(form)
   }
 
-  function saveForm(){
-    console.log("Form saved")
 
-  }
 
   function handleClickBack() {
     setCurrentPage((currentPage) => {

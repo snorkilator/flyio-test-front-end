@@ -5,7 +5,7 @@
 // each field page has a back button and a next button
 // for required fields next button doesn't work till input is valid
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type form = { Subject: string; Email: string; Message: string };
 type props = {
@@ -51,6 +51,25 @@ function Form() {
   }
 
 
+
+  useEffect(()=>{
+ let int =  setInterval(async function HandleSaveForm() {
+      let options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      };
+      try {
+        let response = await fetch("/save", options);
+        console.log("response:"+response.status)
+      } catch (error) {
+        console.log(error);
+      }
+    }, 1000)
+    return(()=>{clearInterval(int)}
+  )}, [form])
 
   function handleClickBack() {
     setCurrentPage((currentPage) => {

@@ -20,3 +20,8 @@
   * When restoring state, first try from local storage (You'll have a programatic garuntee that it is the same as what's on the server)
   * then try restoring from server
   * If nothing in either of those places, there is no saved form data
+
+## Using Debounce
+* when form field changed, trigger a timer
+* if no further changes happen within time, send update to DB
+* if new change within timer, set timer again

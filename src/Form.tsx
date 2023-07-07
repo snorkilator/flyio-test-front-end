@@ -20,8 +20,8 @@ function Form() {
     Message: "message",
   } as form);
 
-  useEffect(()=>{
- let int =  setInterval(async function HandleSaveForm() {
+  useEffect(() => {
+    let int = setInterval(async function HandleSaveForm() {
       let options = {
         method: "POST",
         headers: {
@@ -31,13 +31,15 @@ function Form() {
       };
       try {
         let response = await fetch("/save", options);
-        console.log("response:"+response.status)
+        console.log("response:" + response.status);
       } catch (error) {
         console.log(error);
       }
-    }, 1000)
-    return(()=>{clearInterval(int)}
-  )}, [form])
+    }, 1000);
+    return () => {
+      clearInterval(int);
+    };
+  }, [form]);
 
   function handleClickBack() {
     setCurrentPage((currentPage) => {
@@ -139,7 +141,7 @@ function Message(props: props) {
 // 3
 function Submit(props: props) {
   async function HandleSendForm(e: React.MouseEvent) {
-    e.preventDefault()
+    e.preventDefault();
     let options = {
       method: "POST",
       headers: {
@@ -149,7 +151,7 @@ function Submit(props: props) {
     };
     try {
       let response = await fetch("", options);
-      console.log("response:"+response.status)
+      console.log("response:" + response.status);
     } catch (error) {
       console.log(error);
     }

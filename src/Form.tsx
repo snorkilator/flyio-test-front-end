@@ -19,6 +19,38 @@ function Form() {
     Email: "email",
     Message: "message",
   } as form);
+  
+  async function saveForm() {
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    };
+    try {
+      let response = await fetch("/save", options);
+      console.log("response:"+response.status)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // TODO: change the flag set to use useEffect instead
+  // use cleanup function that executes on unmount
+  // cleanup function should save the form one last time
+  let [dataHasBeenEntered, setDataHasBeenEntered] = useState(false)
+  function updateFormAndFlag(form: React.SetStateAction<form>){
+    // the first time this function runs, the flag will be false
+    // we only want to set the interval on the first run
+    if (!dataHasBeenEntered){
+      setInterval(saveForm, 5000)
+    }
+    setDataHasBeenEntered(true)
+    setForm(form)
+  }
+
+
 
   useEffect(() => {
     let int = setInterval(async function HandleSaveForm() {
@@ -59,17 +91,17 @@ function Form() {
   }
   function handleFormChange(currentPage: number, value: string) {
     if (currentPage === 0) {
-      setForm((prevForm) => {
+      updateFormAndFlag((prevForm) => {
         return { ...prevForm, Subject: value };
       });
     }
     if (currentPage === 1) {
-      setForm((prevForm) => {
+      updateFormAndFlag((prevForm) => {
         return { ...prevForm, Email: value };
       });
     }
     if (currentPage === 2) {
-      setForm((prevForm) => {
+      updateFormAndFlag((prevForm) => {
         return { ...prevForm, Message: value };
       });
     }
@@ -80,6 +112,7 @@ function Form() {
   return (
     <div id="send-me-a-message">
       <h2>Send me a message</h2>
+      {dataHasBeenEntered ? "Form has been used":"Form has not been used"}
       <form>
         {pages[currentPage]({ form: form, handleFormChange: handleFormChange })}
       </form>

@@ -14,6 +14,9 @@ type props = {
 };
 function Form() {
   let [currentPage, setCurrentPage] = useState(0);
+
+  // When form is mounted, fetch from database
+  // will likely need to send cookie to authenticate
   let [form, setForm] = useState({
     Subject: "subject",
     Email: "email",

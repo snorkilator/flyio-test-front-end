@@ -23,9 +23,12 @@ function Form() {
     Message: "message",
   } as form);
   
+  let prevForm: form = form
   function saveForm() {
     let interval = setInterval(
     async  () => {
+    let currentForm = form
+    if (prevForm == currentForm){return}
     let options = {
       method: "POST",
       headers: {
@@ -36,6 +39,8 @@ function Form() {
     try {
       let response = await fetch("/save", options);
       console.log("response:"+response.status)
+      // need to try this with actuall backend because prevForm never gets updated because status code is 404 without backend
+      if (response.status == 200){prevForm = currentForm}
     } catch (error) {
       console.log(error);
     }

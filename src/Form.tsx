@@ -12,65 +12,41 @@ type props = {
   form: form;
   handleFormChange: (currentPage: number, value: string) => void;
 };
+var setForm: React.Dispatch<React.SetStateAction<form>>;
+var form: form;
 function Form() {
   let [currentPage, setCurrentPage] = useState(0);
 
-  // When form is mounted, fetch from database
-  // will likely need to send cookie to authenticate
-  let [form, setForm] = useState({
-    Subject: "subject",
-    Email: "email",
-    Message: "message",
-  } as form);
-  
-  let prevForm: form = form
-  function saveForm() {
-    let interval = setInterval(
-    async  () => {
-    let currentForm = form
-    if (prevForm == currentForm){return}
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    };
-    try {
-      let response = await fetch("/save", options);
-      console.log("response:"+response.status)
-      // need to try this with actuall backend because prevForm never gets updated because status code is 404 without backend
-      if (response.status == 200){prevForm = currentForm}
-    } catch (error) {
-      console.log(error);
+  [form, setForm] = useState((): form => {
+    let retrievedForm = localStorage.getItem("form");
+    if (!retrievedForm) {
+      return {
+        Subject: "subject",
+        Email: "email",
+        Message: "message",
+      };
     }
-  }
-    )
-    return clearInterval(interval)
-  }
-
-  useEffect(saveForm, [])
+    console.log(retrievedForm);
+    let parsedForm: form = JSON.parse(retrievedForm);
+    return parsedForm;
+  });
+  console.log(form);
 
   useEffect(() => {
-    let int = setInterval(async function HandleSaveForm() {
-      let options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      };
-      try {
-        let response = await fetch("/save", options);
-        console.log("response:" + response.status);
-      } catch (error) {
-        console.log(error);
-      }
-    }, 1000);
-    return () => {
-      clearInterval(int);
-    };
-  }, [form]);
+    console.log("saving form");
+    let interval = setInterval(
+      () => {
+        // console.log("page number: " + p);
+        let formStr = JSON.stringify(form);
+        localStorage.setItem("form", formStr);
+        console.log("setting storage: " + formStr);
+      },
+      1000,
+      form,
+      currentPage
+    );
+    return () => clearInterval(interval);
+  }, []);
 
   function handleClickBack() {
     setCurrentPage((currentPage) => {
@@ -106,14 +82,30 @@ function Form() {
     }
   }
 
-  let pages = [Subject, Email, Message, Submit];
-
+  let pages = [
+    { component: Subject, name: "Subject" },
+    { component: Email, name: "Email" },
+    { component: Message, name: "Message" },
+    { component: Submit, name: "Submit" },
+  ];
+  function goToFormPage(pageNum: number) {
+    if (pageNum < pages.length) {
+      setCurrentPage(pageNum);
+    }
+  }
+  let formPageLinks = pages.map((page, i)=>{
+    return <li onClick={()=>{goToFormPage(i)}} className={i == currentPage ? "highlighted":"notHighlighted"}><a>{page.name}</a></li>
+  })
   return (
     <div id="send-me-a-message">
       <h2>Send me a message</h2>
       <form>
-        {pages[currentPage]({ form: form, handleFormChange: handleFormChange })}
+        {pages[currentPage].component({
+          form: form,
+          handleFormChange: handleFormChange,
+        })}
       </form>
+      <ul>{formPageLinks}</ul>
       <button onClick={handleClickBack}>Back</button>
       <button onClick={handleClickNext}>Next</button>
     </div>

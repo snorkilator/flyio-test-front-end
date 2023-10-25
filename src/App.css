@@ -11,3 +11,16 @@ img {
 .info{
     width: 40%;
 }
+
+.highlighted{
+    color: red
+}
+.notHighlighted{
+    color: blue
+}
+
+li{
+    display: inline;
+    margin: 10p;
+    padding: 10p;
+}
